@@ -21,8 +21,6 @@ class ContactController extends Controller
 
                // Para cada contato, buscar a note de outra fonte e adicionar ao contato
                $contacts->each(function ($contact) use ($user){
-                   // Aqui você pode fazer a chamada ao serviço externo ou repositório para buscar a note
-                   // Este é um exemplo mock, substitua pelo seu método real de busca
                    try{
                        $contact->image = $this->getImageForContact($user->id ,$contact->id)
                         ;
@@ -125,7 +123,12 @@ class ContactController extends Controller
         $contact->delete();
 
         Storage::delete($request->user()->id.'/'.$contact->id.'.jpg');
-        return response()->json(null, 204);
+        return response()->json(
+            [
+                'message' => 'Contact deleted'
+            ], 
+            204
+        );
     }
 
 
