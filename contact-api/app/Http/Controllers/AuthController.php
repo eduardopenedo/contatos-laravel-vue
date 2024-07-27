@@ -43,18 +43,14 @@ class AuthController extends Controller
 
     public function logout(Request $request){
         // Revoke all tokens...
-        if(Auth::attempt($request->only('email', 'password'))){
-            $request->user()->tokens()->delete();
+        
+            $request->user()->currentAccessToken()->delete();
             return response()->json(
                 [
-                    'message' => 'Logout', 
-                    'tokens' => $request->user()->tokens
+                    'message' => 'Token revoked'
                 ], 
                 200
             );
+        
         }
-
-
-
-    }
 }
