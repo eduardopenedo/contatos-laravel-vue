@@ -47,7 +47,7 @@ class ContactController extends Controller
     {
         $fieldsTovalidate = [
             'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:255',
+            'phone' => ['integer', 'regex:/\d{9}/'],
             'email' => 'required|string|email|max:255',
             'image' => 'required|string', // Supondo que a imagem seja passada como string Base64
         ];
