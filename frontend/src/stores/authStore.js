@@ -32,6 +32,16 @@ export const useAuthStore = defineStore('auth', {
         console.error('There was an error!', error);
       });
     },
+    async register(pessoa){
+      let errors = []
+      
+      await axios.post('http://localhost:8000/api/auth/register/', pessoa).then(
+        data=> {this.user = data.data;this.auth=true},
+        error=> {errors = error.response.data} 
+      )
+      
+      return errors
+    },
     logout() {
       this.auth = false
       this.token=null

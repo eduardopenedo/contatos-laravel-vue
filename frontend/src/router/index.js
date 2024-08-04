@@ -5,6 +5,7 @@ import ContactForm from '@/views/ContactForm.vue'
 import { useAuthStore } from '@/stores/authStore'
 
 import LoginView from '@/views/LoginView.vue'
+import RegisterView from '@/views/RegisterView.vue'
 
 
 const router = createRouter({
@@ -39,6 +40,10 @@ const router = createRouter({
       {
         path: '/login',
         component:LoginView,
+      },
+      {
+        path: '/register',
+        component:RegisterView,
       }
   ]
 })

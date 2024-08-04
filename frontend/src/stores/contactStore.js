@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import instance from '@/axios.js';
+import instance from '@/service/axios.js';
 import { useAuthStore } from './authStore';
 
 export const useContactStore = defineStore('contact', {
