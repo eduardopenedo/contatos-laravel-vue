@@ -51,9 +51,11 @@ class ContactController extends Controller
             'email' => 'required|string|email|max:255',
             'image' => 'required|string', // Supondo que a imagem seja passada como string Base64
         ];
-        
+        $messages = [
+            'phone.regex' => 'O telefone precisa ter o formato 99999-9999!'
+        ];
         // Validar todos os campos, incluindo os que não serão salvos
-        $request->validate($fieldsTovalidate);
+        $request->validate($fieldsTovalidate, $messages);
         
         // Coletar apenas os dados que serão salvos no banco de dados
         $contactData = $request->only(['name', 'phone', 'email']);
@@ -102,6 +104,19 @@ class ContactController extends Controller
     public function update(Request $request, Contact $contact)
     {
         $contact->image_md5=md5($request->image);
+
+        $fieldsTovalidate = [
+            'name' => 'string|max:255',
+            'phone' => ['integer', 'regex:/\d{9}/'],
+            'email' => 'string|email|max:255',
+            'image' => 'string', // Supondo que a imagem seja passada como string Base64
+        ];
+        $messages = [
+            'phone.regex' => 'O telefone precisa ter o formato 99999-9999!'
+        ];
+        // Validar todos os campos, incluindo os que não serão salvos
+        $request->validate($fieldsTovalidate, $messages);
+
         $contact->update($request->all());
 
         if($request->image!=null){
