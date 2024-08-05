@@ -17,8 +17,15 @@ return new class extends Migration
             $table->string('phone');
             $table->string('email');
             $table->string('image_md5');
+            $table->foreignId('user_id')
+            ->constrained(
+                table: 'users'
+            )
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
             $table->timestamps();
         });
+
     }
 
     /**

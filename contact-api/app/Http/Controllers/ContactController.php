@@ -16,8 +16,8 @@ class ContactController extends Controller
     {
             $user = $request->user();
 
-               // Buscar todos os contatos
-               $contacts = Contact::all();
+               // Buscar todos os contatos do usuario
+               $contacts = Contact::where('user_id', $user->id)->get();
 
                // Para cada contato, buscar a note de outra fonte e adicionar ao contato
                $contacts->each(function ($contact) use ($user){
@@ -58,6 +58,8 @@ class ContactController extends Controller
         // Coletar apenas os dados que serão salvos no banco de dados
         $contactData = $request->only(['name', 'phone', 'email']);
         
+        $contactData['user_id'] = $request->user()->id;
+
         // Adicionar o hash md5 da imagem ao array de dados do contato
         $contactData['image_md5'] = md5($request->image);
         

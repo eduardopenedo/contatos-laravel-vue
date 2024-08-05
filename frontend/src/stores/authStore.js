@@ -17,21 +17,28 @@ export const useAuthStore = defineStore('auth', {
         name: 'Eduardo'
       }
       console.log(email,password)
-      await axios.post('http://localhost:8000/api/auth/login/',{
-        email,
-        password,
-      }
-    )
-      .then(response => {
+      let response 
+      try{
+       response =  await axios.post('http://localhost:8000/api/auth/login/',
+          {
+          email,
+          password,
+          }
+        )
         this.token=response.data.token;
         if(this.token){
           this.auth = true
         }
-      })
-      .catch(error => {
-        console.error('There was an error!', error);
-      });
+        console.log(response)
+      }
+      catch(e){
+        return e;
+      }
+
+      return response;
+
     },
+    
     async register(pessoa){
       let errors = []
       
@@ -39,7 +46,7 @@ export const useAuthStore = defineStore('auth', {
         data=> {this.user = data.data;this.auth=true},
         error=> {errors = error.response.data} 
       )
-      
+
       return errors
     },
     logout() {

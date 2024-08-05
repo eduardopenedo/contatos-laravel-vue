@@ -24,6 +24,9 @@
       </div>
       <button type="submit" class="btn btn-primary">Entrar</button>
     </form>
+    <span style="color:red">
+      {{errors['message']}}
+    </span>
 
   </div>
 </template>
@@ -32,32 +35,34 @@
 import { ref } from 'vue';
 import { useAuthStore } from '@/stores/authStore'; // Importar a store de autenticação
 import { useRouter } from 'vue-router';
+import ErrorComponent from '@/components/Forms/ErrorComponent.vue';
 
 export default {
+  components:{
+    ErrorComponent
+  },
   setup() {
     let email = ref('');
     let password = ref('');
+    let errors = ref({});
+
     const authStore = useAuthStore();
     let rs = useRouter()
 
-    const handleLogin = () => {
-      // Aqui você deve adicionar a lógica para autenticar o usuário.
-      // Este é um exemplo fictício; substitua com sua lógica real de autenticação.
+    const handleLogin = async () => {
+      let response;
+      try{
+        response = await authStore.authenticate(email.value, password.value)
+        rs.push('/'); // Redirecionar para uma página protegida após login
+      } catch(e){
+        alert('Credenciais inválidas');
+      }
+      errors.value = response.response.data
       
-      authStore.authenticate(email.value, password.value).then(
-        function(){
-          if (authStore.auth) {
-            rs.push('/'); // Redirecionar para uma página protegida após login
-          } else {
-            alert('Credenciais inválidas');
-          }
-        }
+      
+    }
 
-      );
-  
-    };
-
-    return { email, password, handleLogin };
+    return { email, password, handleLogin, errors };
   },
 };
 </script>

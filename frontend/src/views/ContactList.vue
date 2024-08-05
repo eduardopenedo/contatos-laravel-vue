@@ -1,23 +1,29 @@
 <script setup>
 import { useContactStore } from '../stores/contactStore';
 import { onMounted } from 'vue';
+import { ref } from 'vue';
 
 const contactStore = useContactStore();
+let contacts = ref(null);
 
 onMounted(async () => {
-  await contactStore.fetchContacts();
+  await contactStore.fetchContacts().then(resolve => contacts.value=contactStore.contacts);
 });
 </script>
 
 <template>
   <div class="contact-list-container">
     <h1>Contact List</h1>
-
     <router-link class="add-contact" to="/add">Add Contact</router-link>
     <ul class="contact-list">
-      <li v-if="contactStore.contacts.length==0" >
+      <li v-if="contacts==null" >
         <center>
           Carregando...
+        </center>
+      </li>
+      <li v-if="contacts!=null && contacts.length==0" >
+        <center>
+          Nenhum Contato...
         </center>
       </li>
         <li v-for="contact in contactStore.contacts" :key="contact.id" class="contact-item">

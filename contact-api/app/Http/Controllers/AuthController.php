@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Contact;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
@@ -12,12 +13,15 @@ class AuthController extends Controller
 {
     //
     public function login(Request $request){
+
         if(Auth::attempt($request->only('email', 'password'))){
             $token = $request->user()->createToken('login')->plainTextToken;
             return response()->json(['token' => $token], 200);
 
         } else{
-            return "Not authorized";
+            return response()->json([
+                'message' => "Not authorized",
+            ], 401);
         }
     
     }

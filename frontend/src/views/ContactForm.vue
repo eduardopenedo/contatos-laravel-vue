@@ -64,9 +64,11 @@ export default {
             }
           );
         } else {
+
           await contactStore.addContact(contact).then(
           function(){
-              errors.value = contactStore.errors
+              errors.value = contactStore.errors;
+              router.push('/')
               return
             });
         }
